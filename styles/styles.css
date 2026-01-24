@@ -2229,8 +2229,7 @@ button.control-icon[data-action="togglePalette"][data-palette="movementActions"]
     font-weight: bold !important;
     font-size: 1.3em !important;
     margin: 5px 0px 5px 0px !important;
-    border-bottom: 1px solid #ffffff !important;
-    color: #ffffff !important;
+    border-bottom: 1px solid rgb(255, 255, 255) !important;
     line-height: 1.3 !important;
 }
 
@@ -2238,8 +2237,7 @@ button.control-icon[data-action="togglePalette"][data-palette="movementActions"]
     font-weight: bold !important;
     font-size: 1.1em !important;
     margin: 5px 0px 5px 0px !important;
-    border-bottom: 1px solid #ffffff !important;
-    color: #ffffff !important;
+    border-bottom: 1px solid rgb(255, 255, 255) !important;
     line-height: 1.3 !important;
 }
 
