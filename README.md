@@ -156,7 +156,7 @@ Applied 효과의 `attributes` 객체에 사용 가능한 속성들입니다.
 
 ---
 
-## 디스에이블 타이밍 (Disable)
+## 비활성화 타이밍 (Disable)
 
 `disable` 속성은 효과가 자동으로 제거되는 시점을 결정합니다:
 
@@ -266,44 +266,6 @@ await actor.update({
     }
   }
 });
-```
-
-### 5. 다이얼로그 입력 기반
-
-```javascript
-const actor = canvas.tokens.controlled[0]?.actor;
-if (!actor) return;
-
-new Dialog({
-  title: "값 입력",
-  content: `
-    <form>
-      <div class="form-group">
-        <label>보정값:</label>
-        <input type="number" name="value" value="0" style="width: 100%;"/>
-      </div>
-    </form>
-  `,
-  buttons: {
-    ok: {
-      label: "확인",
-      callback: async (html) => {
-        const value = parseInt(html.find('input[name="value"]').val());
-        
-        await actor.update({
-          [`system.attributes.applied.dynamic_${Date.now()}`]: {
-            name: "동적 효과",
-            disable: 'round',
-            img: 'icons/svg/aura.svg',
-            attributes: {
-              dice: value
-            }
-          }
-        });
-      }
-    }
-  }
-}).render(true);
 ```
 
 ## 주의사항
