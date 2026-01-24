@@ -1756,6 +1756,54 @@
     }
 
     /**
+     * GM 전용: 이니셔티브 실행 (Setup → Initiative)
+     */
+    function handleGMInitiative() {
+        if (!game.user.isGM) {
+            ui.notifications.warn('GM만 사용할 수 있습니다.');
+            return;
+        }
+        
+        if (!game.combat) {
+            ui.notifications.warn('진행 중인 전투가 없습니다.');
+            return;
+        }
+        
+        const process = getCombatProcess();
+        if (!process || process.type !== 'setup') {
+            ui.notifications.warn('Setup 프로세스에서만 실행할 수 있습니다.');
+            return;
+        }
+        
+        // Initiative 프로세스로 전환
+        game.combat.nextTurn();
+    }
+
+    /**
+     * GM 전용: 다음 라운드 (Cleanup → Setup)
+     */
+    function handleGMNextRound() {
+        if (!game.user.isGM) {
+            ui.notifications.warn('GM만 사용할 수 있습니다.');
+            return;
+        }
+        
+        if (!game.combat) {
+            ui.notifications.warn('진행 중인 전투가 없습니다.');
+            return;
+        }
+        
+        const process = getCombatProcess();
+        if (!process || process.type !== 'cleanup') {
+            ui.notifications.warn('Cleanup 프로세스에서만 실행할 수 있습니다.');
+            return;
+        }
+        
+        // 다음 라운드로
+        game.combat.nextRound();
+    }
+
+    /**
      * 전투 액션 처리
      */
     function handleCombatAction(action) {
@@ -2573,6 +2621,17 @@
      * 사이드 컨트롤 버튼 클릭 처리
      */
     function handleSideControlButtonClick(action) {
+        // GM 전용 버튼 처리
+        if (action === 'gmInitiative') {
+            handleGMInitiative();
+            return;
+        }
+        
+        if (action === 'gmNextRound') {
+            handleGMNextRound();
+            return;
+        }
+        
         const token = syncCurrentToken();
         if (!token || !token.actor) {
             ui.notifications.warn('토큰에 연결된 액터가 없습니다.');
@@ -2751,23 +2810,37 @@
 
         // 현재 선택된 토큰 확인
         const token = syncCurrentToken();
-        if (!token || !token.actor) {
-            return;
-        }
+        
+        // GM이 아니면 기존 로직 유지 (토큰 필수)
+        if (!game.user.isGM) {
+            if (!token || !token.actor) {
+                return;
+            }
 
-        const actor = token.actor;
+            const actor = token.actor;
 
-        // 컴배턴트인지 확인 (전투에 참여한 액터인지)
-        const combatant = game.combat.combatants.find(c => c.actor && c.actor.id === actor.id);
-        if (!combatant) {
-            // 컴배턴트가 아니면 버튼 표시 안 함
-            return;
-        }
+            // 컴배턴트인지 확인 (전투에 참여한 액터인지)
+            const combatant = game.combat.combatants.find(c => c.actor && c.actor.id === actor.id);
+            if (!combatant) {
+                // 컴배턴트가 아니면 버튼 표시 안 함
+                return;
+            }
 
-        // 하위 버튼이 표시되어 있으면 하위 버튼 생성
-        if (currentSideControlActionType) {
-            createSubButtons(buttonsContainer, currentSideControlActionType, actor);
-            return;
+            // 하위 버튼이 표시되어 있으면 하위 버튼 생성
+            if (currentSideControlActionType) {
+                createSubButtons(buttonsContainer, currentSideControlActionType, actor);
+                return;
+            }
+        } else {
+            // GM인 경우: 토큰이 있고 하위 버튼이 표시되어 있으면 하위 버튼 생성
+            if (token && token.actor && currentSideControlActionType) {
+                const actor = token.actor;
+                const combatant = game.combat.combatants.find(c => c.actor && c.actor.id === actor.id);
+                if (combatant) {
+                    createSubButtons(buttonsContainer, currentSideControlActionType, actor);
+                    return;
+                }
+            }
         }
 
         // UI 버튼 폰트 설정 가져오기
@@ -2785,58 +2858,89 @@
             return;
         }
 
-        // 프로세스별 버튼 설정 가져오기 (능력치 버튼 제외)
+        // 프로세스별 버튼 설정 가져오기
         let buttons = [];
+        
+        // GM인 경우 토큰이 있으면 해당 토큰의 액터 가져오기
+        let actor = null;
+        if (token && token.actor) {
+            const combatant = game.combat.combatants.find(c => c.actor && c.actor.id === token.actor.id);
+            if (combatant) {
+                actor = token.actor;
+            }
+        }
         
         switch (process.type) {
             case 'setup':
-                buttons = [
-                    { label: 'DX3rd.Setup', action: 'setup' },
-                    { label: 'DX3rd.Reaction', action: 'reaction' },
-                    { label: 'DX3rd.Auto', action: 'auto' }
-                ];
+                if (actor) {
+                    // 토큰이 선택되어 있으면 일반 버튼
+                    buttons = [
+                        { label: 'DX3rd.Setup', action: 'setup' },
+                        { label: 'DX3rd.Reaction', action: 'reaction' },
+                        { label: 'DX3rd.Auto', action: 'auto' }
+                    ];
+                }
+                // GM 전용: 토큰 선택 여부와 관계없이 이니셔티브 버튼 추가
+                if (game.user.isGM) {
+                    buttons.push({ label: 'DX3rd.Initiative', action: 'gmInitiative', isGMOnly: true });
+                }
                 break;
                 
             case 'initiative':
-                buttons = [
-                    { label: 'DX3rd.Initiative', action: 'initiative' },
-                    { label: 'DX3rd.Reaction', action: 'reaction' },
-                    { label: 'DX3rd.Auto', action: 'auto' }
-                ];
-                break;
-                
-            case 'main':
-                // 현재 턴을 가진 액터인가?
-                const isCurrentActor = process.actorId === actor.id;
-                
-                if (isCurrentActor) {
-                    // 메인 액터: 5개 버튼
+                if (actor) {
                     buttons = [
-                        { label: 'DX3rd.Minor', action: 'minor' },
-                        { label: 'DX3rd.Major', action: 'major' },
-                        { label: 'DX3rd.Reaction', action: 'reaction' },
-                        { label: 'DX3rd.Auto', action: 'auto' },
-                        { label: 'DX3rd.Turn', action: 'turn' }
-                    ];
-                } else {
-                    // 대기 중인 액터: 2개 버튼
-                    buttons = [
+                        { label: 'DX3rd.Initiative', action: 'initiative' },
                         { label: 'DX3rd.Reaction', action: 'reaction' },
                         { label: 'DX3rd.Auto', action: 'auto' }
                     ];
                 }
                 break;
                 
+            case 'main':
+                if (actor) {
+                    // 현재 턴을 가진 액터인가?
+                    const isCurrentActor = process.actorId === actor.id;
+                    
+                    if (isCurrentActor) {
+                        // 메인 액터: 5개 버튼
+                        buttons = [
+                            { label: 'DX3rd.Minor', action: 'minor' },
+                            { label: 'DX3rd.Major', action: 'major' },
+                            { label: 'DX3rd.Reaction', action: 'reaction' },
+                            { label: 'DX3rd.Auto', action: 'auto' },
+                            { label: 'DX3rd.Turn', action: 'turn' }
+                        ];
+                    } else {
+                        // 대기 중인 액터: 2개 버튼
+                        buttons = [
+                            { label: 'DX3rd.Reaction', action: 'reaction' },
+                            { label: 'DX3rd.Auto', action: 'auto' }
+                        ];
+                    }
+                }
+                break;
+                
             case 'cleanup':
-                buttons = [
-                    { label: 'DX3rd.Cleanup', action: 'cleanup' },
-                    { label: 'DX3rd.Reaction', action: 'reaction' },
-                    { label: 'DX3rd.Auto', action: 'auto' }
-                ];
+                if (actor) {
+                    buttons = [
+                        { label: 'DX3rd.Cleanup', action: 'cleanup' },
+                        { label: 'DX3rd.Reaction', action: 'reaction' },
+                        { label: 'DX3rd.Auto', action: 'auto' }
+                    ];
+                }
+                // GM 전용: 토큰 선택 여부와 관계없이 다음 라운드 버튼 추가
+                if (game.user.isGM) {
+                    buttons.push({ label: 'DX3rd.NextRound', action: 'gmNextRound', isGMOnly: true });
+                }
                 break;
                 
             default:
                 buttons = [];
+        }
+
+        // 버튼이 없으면 종료
+        if (buttons.length === 0) {
+            return;
         }
 
         // 버튼 생성 및 애니메이션 적용
@@ -2845,6 +2949,11 @@
             button.className = 'dx3rd-side-control-btn slide-in-fade-in';
             button.textContent = game.i18n.localize(buttonConfig.label);
             button.dataset.action = buttonConfig.action;
+            
+            // GM 전용 버튼 표시
+            if (buttonConfig.isGMOnly) {
+                button.classList.add('gm-only');
+            }
             
             // 각 버튼에 순차적 애니메이션 지연 적용
             button.style.animationDelay = `${index * 0.025}s`;
