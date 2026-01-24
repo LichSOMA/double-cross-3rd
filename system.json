@@ -1,0 +1,101 @@
+{
+  "id": "double-cross-3rd",
+  "title": "Double Cross 3rd",
+  "description": "Double Cross 3rd System for Foundry VTT 13",
+  "authors": [
+    {
+      "name": "LichSOMA",
+      "flags": {}
+    }
+  ],
+  "url": "",
+  "compatibility": {
+    "minimum": "13.340",
+    "verified": "13.342"
+  },
+  "version": "0.1.0",
+  "scripts": [
+    "scripts/helpers.js",
+    "scripts/condtions.js",
+    "scripts/combat/combat.js",
+    "scripts/dx3rd-macro.js",
+    "scripts/disable-hooks.js",
+    "scripts/movement-ruler.js",
+    "scripts/dice/dice-term.js",
+    "scripts/dialog/spell-dice-remove-dialog.js",
+    "scripts/dialog/skill-create-dialog.js",
+    "scripts/dialog/skill-edit-dialog.js",
+    "scripts/dialog/skills-settings-dialog.js",
+    "scripts/dialog/item-extend-dialog.js",
+    "scripts/dialog/equipment-selection-dialog.js",
+    "scripts/dialog/weapon-for-attack-dialog.js",
+    "scripts/handlers/universal-handler.js",
+    "scripts/combat/dx3rd-combat-ui.js",
+    "scripts/dx3rd-action-ui.js",
+    "scripts/handlers/book-handler.js",
+    "scripts/handlers/combo-handler.js",
+    "scripts/handlers/connection-handler.js",
+    "scripts/handlers/etc-handler.js",
+    "scripts/handlers/effect-handler.js",
+    "scripts/handlers/once-handler.js",
+    "scripts/handlers/protect-handler.js",
+    "scripts/handlers/psionic-handler.js",
+    "scripts/handlers/rois-handler.js",
+    "scripts/handlers/spell-handler.js",
+    "scripts/handlers/vehicle-handler.js",
+    "scripts/handlers/weapon-handler.js",
+    "scripts/sheets/item-sheet.js",
+    "scripts/sheets/book-sheet.js",
+    "scripts/sheets/combo-sheet.js",
+    "scripts/sheets/connection-sheet.js",
+    "scripts/sheets/etc-sheet.js",
+    "scripts/sheets/effect-sheet.js",
+    "scripts/sheets/once-sheet.js",
+    "scripts/sheets/protect-sheet.js",
+    "scripts/sheets/psionic-sheet.js",
+    "scripts/sheets/record-sheet.js",
+    "scripts/sheets/rois-sheet.js",
+    "scripts/sheets/spell-sheet.js",
+    "scripts/sheets/syndrome-sheet.js",
+    "scripts/sheets/vehicle-sheet.js",
+    "scripts/sheets/weapon-sheet.js",
+    "scripts/sheets/works-sheet.js",
+    "scripts/sheets/actor-sheet.js",
+    "scripts/document/actor.js",
+    "scripts/document/item.js",
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/styles.css",
+    "styles/spell-dice-remove-dialog.css",
+    "styles/item-extend-dialog.css",
+    "styles/equipment-selection-dialog.css",
+    "styles/weapon-for-attack-dialog.css",
+    "styles/skills-settings-dialog.css",
+    "styles/combo-dialog.css",
+    "styles/dx3rd-combat-ui.css",
+    "styles/dx3rd-action-ui.css"
+  ],
+  "languages": [
+    {
+      "lang": "ko",
+      "name": "Korean",
+      "path": "lang/ko.json",
+      "flags": {}
+    }
+  ],
+  "socket": true,
+  "manifest": "",
+  "download": "",
+  "grid": {
+    "distance": 1,
+    "units": "grid"
+  },
+  "relationships": {},
+  "flags": {
+    "hotReload": {
+      "extensions": ["css", "html", "hbs", "json"],
+      "paths": ["templates", "styles", "lang/ko.json", "scripts/dialog"]
+    }
+  }
+}
