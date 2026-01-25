@@ -981,37 +981,6 @@
                     await window.DX3rdUniversalHandler.executeMacros(currentItem, 'onInvoke');
                 }
 
-                // 콤보 아이템의 경우 포함된 이펙트의 onInvoke 매크로도 실행
-                if (currentItem.type === 'combo') {
-                    const rawEffects = (currentItem.system?.effectIds ?? currentItem.system?.effect?.data ?? currentItem.system?.effect) ?? [];
-                    let effectIds = [];
-                    if (Array.isArray(rawEffects)) {
-                        effectIds = rawEffects.filter(e => e && e !== '-');
-                    } else if (rawEffects && typeof rawEffects === 'object') {
-                        effectIds = Object.values(rawEffects)
-                            .map(v => (typeof v === 'string' ? v : (v?.id || null)))
-                            .filter(e => e && e !== '-');
-                    } else if (typeof rawEffects === 'string') {
-                        if (rawEffects && rawEffects !== '-') effectIds = [rawEffects];
-                    }
-                    
-                    console.log('DX3rd | Combo chat - Effect IDs:', effectIds);
-                    
-                    for (const effectId of effectIds) {
-                        if (!effectId || effectId === '-') continue;
-                        const effectItem = this.actor.items.get(effectId);
-                        if (!effectItem) {
-                            console.warn('DX3rd | Combo chat - Effect item not found:', effectId);
-                            continue;
-                        }
-                        console.log('DX3rd | Combo chat - Executing onInvoke macro for effect:', effectItem.name);
-                        
-                        if (window.DX3rdUniversalHandler && window.DX3rdUniversalHandler.executeMacros) {
-                            await window.DX3rdUniversalHandler.executeMacros(effectItem, 'onInvoke');
-                        }
-                    }
-                }
-
                 // 범위 하이라이트 설정 (combo, effect, psionic, weapon, vehicle)
                 if (currentItem.type === 'combo' || currentItem.type === 'effect' ||
                     currentItem.type === 'psionic' || currentItem.type === 'weapon' ||
