@@ -192,14 +192,6 @@ window.DX3rdComboHandler = {
                 console.log('DX3rd | ComboHandler - Effect used count increased:', effectItem.name, currentEffectUsedState, '→', currentEffectUsedState + 1);
             }
 
-            // 호출 시(onInvoke) 타이밍의 매크로 실행
-            try {
-                await handler.executeMacros(effectItem, 'onInvoke');
-                console.log('DX3rd | ComboHandler - Effect onInvoke macros executed:', effectItem.name);
-            } catch (e) {
-                console.warn('DX3rd | ComboHandler - effect onInvoke macro execution failed:', effectItem?.name, e);
-            }
-
             // 이펙트 즉시 처리
             try {
                 if (effectItem.system?.active?.runTiming === 'instant' && !effectItem.system?.active?.state) {
