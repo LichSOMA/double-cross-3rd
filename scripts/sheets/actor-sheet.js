@@ -854,6 +854,30 @@
                         itemData.target = currentItem.system.target || '';
                         itemData.limit = currentItem.system.limit || '-';
                         itemData.used = currentItem.system.used || { disable: 'notCheck', state: 0, max: 0 };
+                        
+                        // 콤보 시트의 getData()에서 계산된 값들 가져오기
+                        if (currentItem.sheet) {
+                            try {
+                                const sheetData = await currentItem.sheet.getData();
+                                itemData.dice = sheetData.system?.dice?.value || 0;
+                                itemData.critical = sheetData.system?.critical?.value || 10;
+                                itemData.add = sheetData.system?.add?.value || 0;
+                                itemData.attack = sheetData.system?.attack?.value || 0;
+                                itemData.encroach = sheetData.system?.encroach?.value || 0;
+                            } catch (e) {
+                                itemData.dice = 0;
+                                itemData.critical = 10;
+                                itemData.add = 0;
+                                itemData.attack = 0;
+                                itemData.encroach = 0;
+                            }
+                        } else {
+                            itemData.dice = 0;
+                            itemData.critical = 10;
+                            itemData.add = 0;
+                            itemData.attack = 0;
+                            itemData.encroach = 0;
+                        }
 
                         // 콤보에 포함된 이펙트와 무기 정보 수집
                         itemData.effects = [];
@@ -1299,15 +1323,15 @@
                     content += `<div class="detail-cell"><span class="detail-key">사정거리:</span> <span class="detail-value">${itemData.range || '-'}</span></div>`;
                     content += `</div>`;
                     content += `<div class="detail-row two-columns">`;
-                    content += `<div class="detail-cell"><span class="detail-key">다이스:</span> <span class="detail-value">${itemData.roll || '-'}</span></div>`;
-                    content += `<div class="detail-cell"><span class="detail-key">크리티컬:</span> <span class="detail-value">-</span></div>`;
+                    content += `<div class="detail-cell"><span class="detail-key">다이스:</span> <span class="detail-value">${itemData.dice || 0}</span></div>`;
+                    content += `<div class="detail-cell"><span class="detail-key">크리티컬:</span> <span class="detail-value">${itemData.critical || 10}</span></div>`;
                     content += `</div>`;
                     content += `<div class="detail-row two-columns">`;
-                    content += `<div class="detail-cell"><span class="detail-key">수정치:</span> <span class="detail-value">-</span></div>`;
-                    content += `<div class="detail-cell"><span class="detail-key">공격력:</span> <span class="detail-value">-</span></div>`;
+                    content += `<div class="detail-cell"><span class="detail-key">수정치:</span> <span class="detail-value">${itemData.add || 0}</span></div>`;
+                    content += `<div class="detail-cell"><span class="detail-key">공격력:</span> <span class="detail-value">${itemData.attack || 0}</span></div>`;
                     content += `</div>`;
                     content += `<div class="detail-row two-columns">`;
-                    content += `<div class="detail-cell"><span class="detail-key">침식치:</span> <span class="detail-value">-</span></div>`;
+                    content += `<div class="detail-cell"><span class="detail-key">침식치:</span> <span class="detail-value">${itemData.encroach || 0}</span></div>`;
                     content += `<div class="detail-cell"><span class="detail-key">제한:</span> <span class="detail-value">${itemData.limit || '-'}</span></div>`;
                     content += `</div>`;
                     content += `</div>`;
