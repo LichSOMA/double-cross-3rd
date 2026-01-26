@@ -404,7 +404,7 @@
                     return skillKeyLower.startsWith('drive');
                     
                 case 'ars':
-                    return skillKeyLower.startsWith('ars') || skillKeyLower.startsWith('arc');
+                    return skillKeyLower.startsWith('ars');
                     
                 case 'know':
                     // know로 시작하거나 cthulhu 스킬

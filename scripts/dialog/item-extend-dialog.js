@@ -634,8 +634,16 @@ class DX3rdItemExtendDialog extends Dialog {
         }
 
         try {
-            const actor = game.actors.get(this.actorId);
-            const item = actor?.items?.get(this.itemId);
+            // 아이템 가져오기: 액터에 속한 아이템 또는 독립 아이템
+            let item = null;
+            if (this.actorId) {
+                const actor = game.actors.get(this.actorId);
+                item = actor?.items?.get(this.itemId);
+            } else {
+                // 독립 아이템 (액터 없음)
+                item = game.items.get(this.itemId);
+            }
+            
             if (!item) {
                 ui.notifications.warn('아이템을 찾을 수 없습니다.');
                 return;
