@@ -1,3 +1,9 @@
+# Double Cross 3rd Edition System for Foundry VTT
+
+> **이 시스템은 생성형 AI의 도움으로 제작되었습니다.**
+
+Foundry VTT 13 버전에서 작동하는 더블크로스 3rd 시스템입니다.
+
 # 아이템 Attributes 입력 방법
 
 아이템의 attributes 값(value)에서 액터의 능력치, 기능, 레벨 등을 참조할 수 있습니다.
