@@ -8,7 +8,6 @@
       "flags": {}
     }
   ],
-  "url": "",
   "compatibility": {
     "minimum": "13.340",
     "verified": "13.342"
@@ -85,8 +84,6 @@
     }
   ],
   "socket": true,
-  "manifest": "",
-  "download": "",
   "grid": {
     "distance": 1,
     "units": "grid"
@@ -97,5 +94,10 @@
       "extensions": ["css", "html", "hbs", "json"],
       "paths": ["templates", "styles", "lang/ko.json", "scripts/dialog"]
     }
-  }
+  },
+  "url": "https://github.com/lichsoma/double-cross-3rd",
+  "manifest": "https://github.com/lichsoma/double-cross-3rd/releases/latest/download/system.json",
+  "download": "https://github.com/lichsoma/double-cross-3rd/releases/download/1.0.0/double-cross-3rd.zip",
+  "license": "https://github.com/lichsoma/double-cross-3rd/blob/main/LICENSE.md",
+  "readme": "https://github.com/lichsoma/double-cross-3rd/blob/main/README.md"
 }
