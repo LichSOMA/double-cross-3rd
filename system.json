@@ -9,10 +9,10 @@
     }
   ],
   "compatibility": {
-    "minimum": "13.340",
-    "verified": "13.342"
+    "minimum": "13",
+    "verified": "13"
   },
-  "version": "0.1.0",
+  "version": "1.0.0",
   "scripts": [
     "scripts/helpers.js",
     "scripts/condtions.js",
