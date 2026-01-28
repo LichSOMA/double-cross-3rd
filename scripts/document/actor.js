@@ -599,6 +599,24 @@
             // 이니셔티브 계산 (sense.total * 2 + mind.total + 아이템/적용 효과 보너스)
             let initBonus = 0;
             
+            // 장착된 프로텍트의 init 값 추가
+            const equippedProtectsForInit = this.items.filter(i => i.type === 'protect' && i.system?.equipment === true);
+            for (const protect of equippedProtectsForInit) {
+                if (protect.system?.init) {
+                    const initValue = window.DX3rdFormulaEvaluator.evaluate(protect.system.init, protect, this);
+                    initBonus += initValue;
+                }
+            }
+            
+            // 장착된 비클의 init 값 추가
+            const equippedVehiclesForInit = this.items.filter(i => i.type === 'vehicle' && i.system?.equipment === true);
+            for (const vehicle of equippedVehiclesForInit) {
+                if (vehicle.system?.init) {
+                    const initValue = window.DX3rdFormulaEvaluator.evaluate(vehicle.system.init, vehicle, this);
+                    initBonus += initValue;
+                }
+            }
+            
             // 활성화된 아이템의 init 보너스 추가
             for (const item of activeItems) {
                 if (item.system?.attributes) {
@@ -1464,6 +1482,15 @@
                 let dodgeCriticalMod = 0;
                 let dodgeAddBonus = 0;
                 
+                // 장착된 프로텍트의 dodge 값 추가 (dodge_add에 적용)
+                const equippedProtectsForDodge = this.items.filter(i => i.type === 'protect' && i.system?.equipment === true);
+                for (const protect of equippedProtectsForDodge) {
+                    if (protect.system?.dodge) {
+                        const dodgeValue = window.DX3rdFormulaEvaluator.evaluate(protect.system.dodge, protect, this);
+                        dodgeAddBonus += dodgeValue;
+                    }
+                }
+                
                 for (const item of activeItems) {
                     if (item.system?.attributes) {
                         for (const [attrKey, attrData] of Object.entries(item.system.attributes)) {
@@ -1629,6 +1656,15 @@
                 let dodgeDiceBonus = 0;
                 let dodgeCriticalMod = 0;
                 let dodgeAddBonus = 0;
+                
+                // 장착된 프로텍트의 dodge 값 추가 (dodge_add에 적용)
+                const equippedProtectsForSkill = this.items.filter(i => i.type === 'protect' && i.system?.equipment === true);
+                for (const protect of equippedProtectsForSkill) {
+                    if (protect.system?.dodge) {
+                        const dodgeValue = window.DX3rdFormulaEvaluator.evaluate(protect.system.dodge, protect, this);
+                        dodgeAddBonus += dodgeValue;
+                    }
+                }
                 
                 for (const item of activeItems) {
                     if (item.system?.attributes) {

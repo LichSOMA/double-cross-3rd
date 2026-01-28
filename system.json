@@ -12,7 +12,7 @@
     "minimum": "13",
     "verified": "13"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": [
     "scripts/helpers.js",
     "scripts/condtions.js",
@@ -97,7 +97,7 @@
   },
   "url": "https://github.com/lichsoma/double-cross-3rd",
   "manifest": "https://github.com/lichsoma/double-cross-3rd/releases/latest/download/system.json",
-  "download": "https://github.com/lichsoma/double-cross-3rd/releases/download/1.0.0/double-cross-3rd.zip",
+  "download": "https://github.com/lichsoma/double-cross-3rd/releases/download/1.0.1/double-cross-3rd.zip",
   "license": "https://github.com/lichsoma/double-cross-3rd/blob/main/LICENSE.md",
   "readme": "https://github.com/lichsoma/double-cross-3rd/blob/main/README.md"
 }
